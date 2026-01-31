@@ -1,0 +1,57 @@
+import { NextResponse } from 'next/server';
+import {
+  VideoIntelligenceServiceClient,
+  protos,
+} from '@google-cloud/video-intelligence';
+
+// IMPORTANT: Video Intelligence + Buffer require Node.js runtime
+export const runtime = 'nodejs';
+
+export async function POST(request: Request) {
+  try {
+    const formData = await request.formData();
+    const file = formData.get('video') as File | null;
+
+    if (!file) {
+      return NextResponse.json(
+        { error: 'No video file provided' },
+        { status: 400 }
+      );
+    }
+
+    // Initialize client (uses service account JSON via env)
+    const client = new VideoIntelligenceServiceClient();
+
+    // Convert uploaded file to Buffer
+    const inputContent = Buffer.from(await file.arrayBuffer());
+
+    // Call Video Intelligence API
+    const [operation] = await client.annotateVideo({
+      inputContent,
+      features: [
+        protos.google.cloud.videointelligence.v1.Feature.LABEL_DETECTION,
+      ],
+    });
+
+    // Wait for async processing
+    const [operationResult] = await operation.promise();
+
+    const labels =
+      operationResult.annotationResults?.[0]?.segmentLabelAnnotations ?? [];
+
+    return NextResponse.json({
+      labels: labels.map((label: any) => ({
+        description: label.entity?.description ?? '',
+        confidence: label.segments?.[0]?.confidence ?? 0,
+        categoryEntities:
+          label.categoryEntities?.map((cat: any) => cat.description) ?? [],
+      })),
+    });
+  } catch (error) {
+    console.error('Error processing video:', error);
+    return NextResponse.json(
+      { error: 'Failed to process video' },
+      { status: 500 }
+    );
+  }
+}
