@@ -30,14 +30,24 @@ export async function POST(request: Request) {
       inputContent,
       features: [
         protos.google.cloud.videointelligence.v1.Feature.LABEL_DETECTION,
+        protos.google.cloud.videointelligence.v1.Feature.OBJECT_TRACKING,
+        protos.google.cloud.videointelligence.v1.Feature.TEXT_DETECTION,
       ],
     });
 
     // Wait for async processing
     const [operationResult] = await operation.promise();
 
-    const labels =
-      operationResult.annotationResults?.[0]?.segmentLabelAnnotations ?? [];
+    const annotationResults = operationResult.annotationResults?.[0];
+    
+    // Get labels
+    const labels = annotationResults?.segmentLabelAnnotations ?? [];
+    
+    // Get objects
+    const objects = annotationResults?.objectAnnotations ?? [];
+    
+    // Get text
+    const textAnnotations = annotationResults?.textAnnotations ?? [];
 
     return NextResponse.json({
       labels: labels.map((label: any) => ({
@@ -46,6 +56,22 @@ export async function POST(request: Request) {
         categoryEntities:
           label.categoryEntities?.map((cat: any) => cat.description) ?? [],
       })),
+      objects: objects.map((object: any) => ({
+        description: object.entity?.description ?? '',
+        confidence: object.confidence ?? 0,
+        frames: object.frames?.map((frame: any) => ({
+          timeOffset: frame.timeOffset?.seconds ? `${frame.timeOffset.seconds}s` : '0s',
+          normalizedBoundingBox: frame.normalizedBoundingBox
+        })) ?? []
+      })),
+      text: textAnnotations.map((text: any) => ({
+        text: text.text ?? '',
+        segments: text.segments?.map((segment: any) => ({
+          startTime: segment.startTime?.seconds ? `${segment.startTime.seconds}s` : '0s',
+          endTime: segment.endTime?.seconds ? `${segment.endTime.seconds}s` : '0s',
+          confidence: segment.confidence ?? 0
+        })) ?? []
+      }))
     });
   } catch (error) {
     console.error('Error processing video:', error);

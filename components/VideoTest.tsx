@@ -33,11 +33,22 @@ function VideoTest() {
       if (data.error) {
         setResult(`Error: ${data.error}`);
       } else {
-        const labels = data.labels.map((label: any) => 
+        // Format labels
+        const labels = data.labels?.map((label: any) => 
           `${label.description} (${Math.round(label.confidence * 100)}%)`
-        ).join(', ');
+        ).join(', ') || 'No labels detected';
         
-        setResult(`Detected: ${labels}`);
+        // Format objects
+        const objects = data.objects?.map((object: any) => 
+          `${object.description} (${Math.round(object.confidence * 100)}%)`
+        ).join(', ') || 'No objects detected';
+        
+        // Format text
+        const text = data.text?.map((textItem: any) => 
+          `"${textItem.text}" (${Math.round(textItem.segments[0]?.confidence * 100 || 0)}%)`
+        ).join(', ') || 'No text detected';
+        
+        setResult(`🏷️ **Labels:** ${labels}\n\n🎯 **Objects:** ${objects}\n\n📝 **Text:** ${text}`);
       }
     } catch (error) {
       console.error('Error analyzing video:', error);
