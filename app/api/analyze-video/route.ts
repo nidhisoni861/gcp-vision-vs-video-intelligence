@@ -32,6 +32,7 @@ export async function POST(request: Request) {
         protos.google.cloud.videointelligence.v1.Feature.LABEL_DETECTION,
         protos.google.cloud.videointelligence.v1.Feature.OBJECT_TRACKING,
         protos.google.cloud.videointelligence.v1.Feature.TEXT_DETECTION,
+        protos.google.cloud.videointelligence.v1.Feature.LOGO_RECOGNITION,
       ],
     });
 
@@ -48,6 +49,9 @@ export async function POST(request: Request) {
     
     // Get text
     const textAnnotations = annotationResults?.textAnnotations ?? [];
+
+    // Get logos
+    const logoAnnotations = annotationResults?.logoRecognitionAnnotations ?? [];
 
     return NextResponse.json({
       labels: labels.map((label: any) => ({
@@ -70,6 +74,15 @@ export async function POST(request: Request) {
           startTime: segment.startTime?.seconds ? `${segment.startTime.seconds}s` : '0s',
           endTime: segment.endTime?.seconds ? `${segment.endTime.seconds}s` : '0s',
           confidence: segment.confidence ?? 0
+        })) ?? []
+      })),
+      logos: logoAnnotations.map((logo: any) => ({
+        description: logo.entity?.description ?? '',
+        confidence: logo.segments?.[0]?.confidence ?? 0,
+        tracks: logo.tracks?.map((track: any) => ({
+          startTime: track.segment?.startTime?.seconds ? `${track.segment.startTime.seconds}s` : '0s',
+          endTime: track.segment?.endTime?.seconds ? `${track.segment.endTime.seconds}s` : '0s',
+          confidence: track.confidence ?? 0
         })) ?? []
       }))
     });

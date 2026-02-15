@@ -48,7 +48,12 @@ function VideoTest() {
           `"${textItem.text}" (${Math.round(textItem.segments[0]?.confidence * 100 || 0)}%)`
         ).join(', ') || 'No text detected';
         
-        setResult(`🏷️ **Labels:** ${labels}\n\n🎯 **Objects:** ${objects}\n\n📝 **Text:** ${text}`);
+        // Format logos
+        const logos = data.logos?.map((logo: any) => 
+          `${logo.description} (${Math.round(logo.confidence * 100)}%)`
+        ).join(', ') || 'No logos detected';
+        
+        setResult(`🏷️ **Labels:** ${labels}\n\n🎯 **Objects:** ${objects}\n\n📝 **Text:** ${text}\n\n🎭 **Logos:** ${logos}`);
       }
     } catch (error) {
       console.error('Error analyzing video:', error);
