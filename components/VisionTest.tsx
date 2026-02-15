@@ -37,12 +37,27 @@ function VisionTest() {
       if (data.error) {
         setResult(`Error: ${data.error}`);
       } else {
-        // Format the results
-        const labels = data.labels.map((label: any) => 
+        // Format labels
+        const labels = data.labels?.map((label: any) => 
           `${label.description} (${Math.round(label.score * 100)}%)`
-        ).join(', ');
+        ).join(', ') || 'No labels detected';
         
-        setResult(`Detected: ${labels}`);
+        // Format objects
+        const objects = data.objects?.map((object: any) => 
+          `${object.name} (${Math.round(object.score * 100)}%)`
+        ).join(', ') || 'No objects detected';
+        
+        // Format text
+        const text = data.text?.slice(1).map((textItem: any) => 
+          `"${textItem.description}"`
+        ).join(', ') || 'No text detected';
+        
+        // Format logos
+        const logos = data.logos?.map((logo: any) => 
+          `${logo.description} (${Math.round(logo.score * 100)}%)`
+        ).join(', ') || 'No logos detected';
+        
+        setResult(`🏷️ **Labels:** ${labels}\n\n🎯 **Objects:** ${objects}\n\n📝 **Text:** ${text}\n\n🎭 **Logos:** ${logos}`);
       }
     } catch (error) {
       console.error('Error analyzing image:', error);
