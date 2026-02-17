@@ -17,8 +17,8 @@
 
 .main {
   max-width: 80rem;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -34,11 +34,12 @@
   display: grid;
   gap: 2rem;
   width: 100%;
+  grid-template-columns: 1fr;
 }
 
 @media (min-width: 768px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 2.5rem;
   }
 }

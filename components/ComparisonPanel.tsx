@@ -242,13 +242,6 @@ export default function ComparisonPanel({
             </tbody>
           </table>
         </div>
-
-        <div className={comparisonStyles.note}>
-          Note: The high-level comparison above is based on typical behaviour of
-          Google Cloud Vision and Video Intelligence APIs. Always check the
-          latest Google Cloud documentation for up-to-date feature set and
-          pricing details.
-        </div>
       </div>
     </section>
   );
