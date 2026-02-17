@@ -2,7 +2,7 @@
 
 import detectionSectionStyles from "@/styles/components/DetectionSection.module.css";
 
-const MAX_VISIBLE_ITEMS = 10;
+const MAX_VISIBLE_ITEMS = 8;
 
 export interface DetectionSectionProps {
   icon: string;
@@ -19,28 +19,21 @@ export function DetectionSection({
   isExpanded,
   onToggle,
 }: DetectionSectionProps) {
-  if (!items || items.length === 0) {
-    return (
-      <div className={detectionSectionStyles.section}>
-        <h4 className={detectionSectionStyles.title}>
-          {icon} {title}
-        </h4>
-        <p className={detectionSectionStyles.empty}>
-          No {title.toLowerCase()} detected
-        </p>
-      </div>
-    );
-  }
-
-  const hasMore = items.length > MAX_VISIBLE_ITEMS;
-  const visibleItems = isExpanded ? items : items.slice(0, MAX_VISIBLE_ITEMS);
+  const itemCount = items?.length ?? 0;
+  const hasMore = itemCount > MAX_VISIBLE_ITEMS;
+  const visibleItems = isExpanded && items ? items : (items ?? []).slice(0, MAX_VISIBLE_ITEMS);
+  const isEmpty = !items || items.length === 0;
 
   return (
-    <div className={detectionSectionStyles.section}>
-      <div className={detectionSectionStyles.header}>
-        <h4 className={detectionSectionStyles.title}>
-          {icon} {title}
-        </h4>
+    <article className={detectionSectionStyles.card}>
+      <div className={detectionSectionStyles.cardHeader}>
+        <div className={detectionSectionStyles.iconWrapper}>
+          <span aria-hidden>{icon}</span>
+          <h4 className={detectionSectionStyles.title}>{title}</h4>
+          {!isEmpty && (
+            <span className={detectionSectionStyles.count}>{itemCount}</span>
+          )}
+        </div>
         {hasMore && (
           <button
             type="button"
@@ -51,11 +44,21 @@ export function DetectionSection({
           </button>
         )}
       </div>
-      <ul className={detectionSectionStyles.list}>
-        {visibleItems.map((item, index) => (
-          <li key={`${title}-${index}`}>{item}</li>
-        ))}
-      </ul>
-    </div>
+      <div className={detectionSectionStyles.content}>
+        {isEmpty ? (
+          <p className={detectionSectionStyles.empty}>
+            No {title.toLowerCase()} detected
+          </p>
+        ) : (
+          <ul className={detectionSectionStyles.list}>
+            {visibleItems.map((item, index) => (
+              <li key={`${title}-${index}`} className={detectionSectionStyles.listItem}>
+                {item}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </article>
   );
 }

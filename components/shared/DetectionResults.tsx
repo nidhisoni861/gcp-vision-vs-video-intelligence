@@ -31,12 +31,14 @@ export function DetectionResults({ results, error }: DetectionResultsProps) {
 
   return (
     <div className={detectionResultsStyles.wrapper}>
-      <h3 className={detectionResultsStyles.title}>Results:</h3>
+      <div className={detectionResultsStyles.resultsHeader}>
+        <h3 className={detectionResultsStyles.title}>Results</h3>
+      </div>
       {error && (
         <p className={detectionResultsStyles.error}>{error}</p>
       )}
       {results && (
-        <div className={detectionResultsStyles.sections}>
+        <div className={detectionResultsStyles.cardsGrid}>
           {SECTIONS.map(({ key, icon, title }) => (
             <DetectionSection
               key={key}
