@@ -94,7 +94,14 @@ export function formatVisionResponse(data: {
 /** Format Video API response into DetectionResults */
 export function formatVideoResponse(data: {
   labels?: Array<{ description: string; confidence?: number }>;
-  objects?: Array<{ entity?: { description?: string }; confidence?: number }>;
+  // Support both shapes:
+  // - { entity: { description }, confidence }  (raw Video Intelligence response)
+  // - { description, confidence }             (our API route-flattened shape)
+  objects?: Array<{
+    entity?: { description?: string };
+    description?: string;
+    confidence?: number;
+  }>;
   text?: Array<{
     text: string;
     segments?: Array<{ confidence?: number }>;
@@ -110,7 +117,11 @@ export function formatVideoResponse(data: {
 
   type ObjectDisplayItem = { key: string; display: string };
   const objectItems: ObjectDisplayItem[] = (data.objects || []).map((obj) => {
-    const description = String(obj.entity?.description ?? 'Unknown');
+    // Prefer flattened description from our API route, but
+    // fall back to the nested entity.description if needed.
+    const rawDescription =
+      obj.description ?? obj.entity?.description ?? 'Unknown';
+    const description = String(rawDescription);
     const confidence = Math.round((obj.confidence ?? 0) * 100);
     return {
       key: description.trim().toLowerCase(),
