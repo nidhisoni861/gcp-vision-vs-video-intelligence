@@ -46,9 +46,10 @@ function VisionTest() {
             <Image
               src={URL.createObjectURL(file)}
               alt="Preview"
-              width={300}
-              height={200}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 42rem"
               className={previewStyles.image}
+              style={{ objectFit: "contain" }}
             />
           </div>
         </div>
