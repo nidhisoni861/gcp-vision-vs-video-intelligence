@@ -1,5 +1,7 @@
 "use client";
 
+import fileUploadStyles from "@/styles/components/FileUpload.module.css";
+
 interface FileUploadProps {
   accept: string;
   onChange: (file: File | null) => void;
@@ -10,7 +12,6 @@ interface FileUploadProps {
 export function FileUpload({
   accept,
   onChange,
-  selectedFile,
   label = "Choose file",
 }: FileUploadProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,12 +20,12 @@ export function FileUpload({
   };
 
   return (
-    <div className="mb-4">
+    <div className={fileUploadStyles.wrapper}>
       <input
         type="file"
         accept={accept}
         onChange={handleChange}
-        className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+        className={fileUploadStyles.input}
         aria-label={label}
       />
     </div>

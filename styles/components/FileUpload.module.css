@@ -1,0 +1,42 @@
+.wrapper {
+  margin-bottom: 1.25rem;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  background: var(--color-off-white);
+  border: 2px solid var(--color-baby-pink);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:hover {
+  border-color: var(--color-pink-accent);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-pink-accent-strong);
+  box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.2);
+}
+
+.input::file-selector-button {
+  padding: 0.4rem 0.75rem;
+  margin-right: 1rem;
+  background: linear-gradient(180deg, var(--color-pink-accent) 0%, var(--color-pink-accent-strong) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-3d-sm);
+}
+
+.input::file-selector-button:hover {
+  background: linear-gradient(180deg, var(--color-pink-accent-strong) 0%, var(--color-text-secondary) 100%);
+}

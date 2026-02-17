@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { DetectionSection } from "./DetectionSection";
 import type { DetectionResults as DetectionResultsType } from "@/redux/types";
+import detectionResultsStyles from "@/styles/components/DetectionResults.module.css";
 
 interface DetectionResultsProps {
   results: DetectionResultsType | null;
@@ -29,13 +30,13 @@ export function DetectionResults({ results, error }: DetectionResultsProps) {
   if (!results && !error) return null;
 
   return (
-    <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-md">
-      <h3 className="font-medium text-gray-900 dark:text-white mb-2">Results:</h3>
+    <div className={detectionResultsStyles.wrapper}>
+      <h3 className={detectionResultsStyles.title}>Results:</h3>
       {error && (
-        <p className="text-red-500 dark:text-red-400 text-sm">{error}</p>
+        <p className={detectionResultsStyles.error}>{error}</p>
       )}
       {results && (
-        <div className="space-y-4 text-sm">
+        <div className={detectionResultsStyles.sections}>
           {SECTIONS.map(({ key, icon, title }) => (
             <DetectionSection
               key={key}

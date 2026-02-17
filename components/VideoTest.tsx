@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { analyzeVideo } from "@/redux/store/slices/videoSlice";
 import { FileUpload, DetectionResults } from "@/components/shared";
+import cardStyles from "@/styles/components/Card.module.css";
+import buttonStyles from "@/styles/components/Button.module.css";
+import previewStyles from "@/styles/components/Preview.module.css";
 
 function VideoTest() {
   const dispatch = useAppDispatch();
@@ -17,10 +20,8 @@ function VideoTest() {
   };
 
   return (
-    <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
-      <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-        Google Video Intelligence API Test
-      </h1>
+    <div className={cardStyles.card}>
+      <h1 className={cardStyles.title}>Google Video Intelligence API Test</h1>
 
       <FileUpload
         accept="video/*"
@@ -32,23 +33,19 @@ function VideoTest() {
       <button
         onClick={handleAnalyze}
         disabled={!file || isLoading}
-        className={`px-4 py-2 rounded-md text-white font-medium ${
-          !file || isLoading
-            ? "bg-green-400 cursor-not-allowed"
-            : "bg-green-600 hover:bg-green-700"
-        }`}
+        className={buttonStyles.primary}
       >
         {isLoading ? "Analyzing..." : "Analyze Video"}
       </button>
 
       {file && (
-        <div className="mt-4">
-          <h3 className="font-medium text-gray-900 dark:text-white">Preview:</h3>
-          <div className="mt-2 w-full max-w-xs">
+        <div className={previewStyles.wrapper}>
+          <h3 className={previewStyles.title}>Preview:</h3>
+          <div className={previewStyles.mediaWrapper}>
             <video
               src={URL.createObjectURL(file)}
               controls
-              className="rounded-md w-full"
+              className={previewStyles.video}
             />
           </div>
         </div>

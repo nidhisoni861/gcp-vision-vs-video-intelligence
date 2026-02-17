@@ -1,26 +1,51 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Baby Pink & White Palette */
+  --color-baby-pink: #ffd6e8;
+  --color-baby-pink-dark: #ffb3d4;
+  --color-pink-accent: #ff85b3;
+  --color-pink-accent-strong: #ff6b9d;
+  --color-white: #ffffff;
+  --color-off-white: #fff9fc;
+  --color-text-primary: #4a1942;
+  --color-text-secondary: #7d3c6d;
+  --color-text-muted: #a8608e;
+  --color-error: #e91e63;
+  
+  /* 3D Design - Shadows */
+  --shadow-3d-sm: 0 2px 8px rgba(255, 107, 157, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-3d-md: 0 4px 16px rgba(255, 107, 157, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06);
+  --shadow-3d-lg: 0 8px 32px rgba(255, 107, 157, 0.15), 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-3d-xl: 0 12px 48px rgba(255, 107, 157, 0.18), 0 6px 16px rgba(0, 0, 0, 0.1);
+  --shadow-inset: inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  
+  /* Radii */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--color-off-white);
+  --color-foreground: var(--color-text-primary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, var(--color-off-white) 0%, var(--color-baby-pink) 50%, var(--color-white) 100%);
+  background-attachment: fixed;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100vh;
 }

@@ -5,6 +5,8 @@ import VisionTest from '@/components/VisionTest';
 import VideoTest from '@/components/VideoTest';
 import ComparisonPanel from '../components/ComparisonPanel';
 import { useAppSelector } from '@/redux/hooks';
+import pageStyles from '@/styles/components/Page.module.css';
+import headerStyles from '@/styles/components/Header.module.css';
 
 export default function Home() {
   const { results: visionResults } = useAppSelector((state) => state.vision);
@@ -19,19 +21,23 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black py-12 px-4 sm:px-6 lg:px-8">
-      <main className="max-w-7xl mx-auto space-y-8">
-        <div className="grid gap-8 md:grid-cols-2">
+    <div className={pageStyles.container}>
+      <header className={headerStyles.header}>
+        <h1 className={headerStyles.title}>Google Cloud AI Vision</h1>
+        <p className={headerStyles.subtitle}>Analyze images & videos with Vision & Video Intelligence API</p>
+      </header>
+      <main className={pageStyles.main}>
+        <div className={pageStyles.grid}>
           <VisionTest />
           <VideoTest />
         </div>
 
         {canCompare && (
-          <div className="flex justify-center">
+          <div className={pageStyles.buttonWrapper}>
             <button
               type="button"
               onClick={handleToggleComparison}
-              className="px-6 py-3 rounded-md bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-md transition-colors"
+              className={pageStyles.compareButton}
             >
               {showComparison
                 ? 'Hide comparison'

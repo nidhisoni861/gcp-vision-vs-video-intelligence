@@ -1,0 +1,30 @@
+.wrapper {
+  margin-top: 1rem;
+}
+
+.title {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.mediaWrapper {
+  margin-top: 0.5rem;
+  max-width: 18rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-3d-sm);
+  border: 2px solid var(--color-baby-pink);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.video {
+  width: 100%;
+  display: block;
+}
