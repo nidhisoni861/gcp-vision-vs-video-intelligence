@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { DetectionResults } from '@/redux/types';
-import { analyzeVideoApi } from '@/services/videoApi';
+import { analyzeVideoApi } from '../../../services/videoApi';
 
 export interface VideoState {
   results: DetectionResults | null;
