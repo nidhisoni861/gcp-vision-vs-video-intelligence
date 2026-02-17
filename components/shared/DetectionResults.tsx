@@ -14,6 +14,7 @@ const SECTIONS = [
   { key: "objects" as const, icon: "🎯", title: "Objects" },
   { key: "text" as const, icon: "📝", title: "Text" },
   { key: "logos" as const, icon: "🎭", title: "Logos" },
+  { key: "sentiment" as const, icon: "💬", title: "Sentiment / Experience" },
 ] as const;
 
 export function DetectionResults({ results, error }: DetectionResultsProps) {
@@ -22,6 +23,7 @@ export function DetectionResults({ results, error }: DetectionResultsProps) {
     objects: false,
     text: false,
     logos: false,
+    sentiment: false,
   });
 
   if (!results && !error) return null;

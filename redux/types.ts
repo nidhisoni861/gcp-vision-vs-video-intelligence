@@ -6,4 +6,6 @@ export interface DetectionResults {
   objects: string[];
   text: string[];
   logos: string[];
+  /** Simple high-level sentiment / experience summary, e.g. "Happy / positive experience" */
+  sentiment: string[];
 }

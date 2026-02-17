@@ -1,5 +1,82 @@
 import type { DetectionResults } from '@/redux/types';
 
+function computeSentimentSummary(
+  labelDescriptions: string[] = [],
+  textContents: string[] = []
+): string[] {
+  const POSITIVE_KEYWORDS = [
+    'happy',
+    'joy',
+    'smile',
+    'smiling',
+    'laugh',
+    'laughing',
+    'celebration',
+    'party',
+    'success',
+    'win',
+    'love',
+    'excited',
+    'fun',
+    'beautiful',
+    'great',
+    'good',
+  ];
+
+  const NEGATIVE_KEYWORDS = [
+    'sad',
+    'cry',
+    'crying',
+    'anger',
+    'angry',
+    'upset',
+    'bad',
+    'terrible',
+    'hate',
+    'hurt',
+    'fear',
+    'scared',
+    'accident',
+    'death',
+    'violence',
+    'fight',
+    'conflict',
+    'failure',
+  ];
+
+  const content = [...labelDescriptions, ...textContents]
+    .join(' ')
+    .toLowerCase()
+    .trim();
+
+  if (!content) {
+    return ['Overall sentiment: Neutral / no strong emotion detected'];
+  }
+
+  const countMatches = (words: string[]) =>
+    words.reduce(
+      (count, word) => (content.includes(word.toLowerCase()) ? count + 1 : count),
+      0
+    );
+
+  const positiveScore = countMatches(POSITIVE_KEYWORDS);
+  const negativeScore = countMatches(NEGATIVE_KEYWORDS);
+
+  if (positiveScore === 0 && negativeScore === 0) {
+    return ['Overall sentiment: Neutral / no strong emotion detected'];
+  }
+
+  if (positiveScore > negativeScore) {
+    return ['Overall sentiment: Happy / positive experience'];
+  }
+
+  if (negativeScore > positiveScore) {
+    return ['Overall sentiment: Sad / negative experience'];
+  }
+
+  return ['Overall sentiment: Mixed experience (both positive and negative cues)'];
+}
+
 /**
  * Reorder items so unique values appear first, duplicates at the end.
  */
@@ -57,6 +134,11 @@ export function formatVisionResponse(data: {
   text?: Array<{ description: string }>;
   logos?: Array<{ description: string; score?: number }>;
 }): DetectionResults {
+  const rawLabelDescriptions =
+    data.labels?.map((label) => label.description).filter(Boolean) ?? [];
+  const rawTextContents =
+    data.text?.map((t) => t.description).filter(Boolean) ?? [];
+
   const labels = getUniqueByKey(
     data.labels,
     (label) => label.description,
@@ -88,7 +170,9 @@ export function formatVisionResponse(data: {
     (desc, score) => (score !== undefined ? `${desc} (${score}%)` : desc)
   );
 
-  return { labels, objects, text, logos };
+  const sentiment = computeSentimentSummary(rawLabelDescriptions, rawTextContents);
+
+  return { labels, objects, text, logos, sentiment };
 }
 
 /** Format Video API response into DetectionResults */
@@ -108,6 +192,11 @@ export function formatVideoResponse(data: {
   }>;
   logos?: Array<{ description?: string; confidence?: number }>;
 }): DetectionResults {
+  const rawLabelDescriptions =
+    data.labels?.map((l) => l.description).filter(Boolean) ?? [];
+  const rawTextContents =
+    data.text?.map((t) => t.text).filter(Boolean) ?? [];
+
   const labels = getUniqueByKey(
     data.labels,
     (l) => l.description,
@@ -147,5 +236,7 @@ export function formatVideoResponse(data: {
     (desc, score) => (score !== undefined ? `${desc} (${score}%)` : desc)
   );
 
-  return { labels, objects, text, logos };
+  const sentiment = computeSentimentSummary(rawLabelDescriptions, rawTextContents);
+
+  return { labels, objects, text, logos, sentiment };
 }

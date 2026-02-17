@@ -32,6 +32,12 @@ const SECTION_METADATA: Array<{
     label: 'Logos',
     helper: 'Brand or product logos recognized by the models.',
   },
+  {
+    key: 'sentiment',
+    label: 'Sentiment / Experience',
+    helper:
+      'Overall emotional tone inferred from detected labels and extracted text.',
+  },
 ];
 
 function summarizeItems(items: string[]): string {
