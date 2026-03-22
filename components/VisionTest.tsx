@@ -11,7 +11,7 @@ import previewStyles from "@/styles/components/Preview.module.css";
 
 function VisionTest() {
   const dispatch = useAppDispatch();
-  const { results, isLoading, error } = useAppSelector((state) => state.vision);
+  const { results, isLoading, error } = useAppSelector((state:any) => state.vision);
   const [file, setFile] = useState<File | null>(null);
 
   const handleAnalyze = () => {

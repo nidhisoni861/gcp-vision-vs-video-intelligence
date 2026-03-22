@@ -23,6 +23,7 @@ export function DetectionSection({
   const hasMore = itemCount > MAX_VISIBLE_ITEMS;
   const visibleItems = isExpanded && items ? items : (items ?? []).slice(0, MAX_VISIBLE_ITEMS);
   const isEmpty = !items || items.length === 0;
+  console.log(visibleItems , "visibleItems")
 
   return (
     <article className={detectionSectionStyles.card}>

@@ -56,7 +56,7 @@ function summarizeItems(items: string[]): string {
   return preview;
 }
 
-export default function ComparisonPanel({
+export default function   ComparisonPanel({
   imageResults,
   videoResults,
 }: ComparisonPanelProps) {

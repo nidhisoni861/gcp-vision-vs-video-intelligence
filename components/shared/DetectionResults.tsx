@@ -19,6 +19,7 @@ const SECTIONS = [
 ] as const;
 
 export function DetectionResults({ results, error }: DetectionResultsProps) {
+  console.log(results , "results")
   const [expandedSections, setExpandedSections] = useState({
     labels: false,
     objects: false,

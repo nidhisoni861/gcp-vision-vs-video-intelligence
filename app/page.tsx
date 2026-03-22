@@ -39,7 +39,7 @@ export default function Home() {
               onClick={handleToggleComparison}
               className={pageStyles.compareButton}
             >
-              {showComparison
+              {showComparison 
                 ? 'Hide comparison'
                 : 'Compare Vision API vs Video Intelligence API'}
             </button>
